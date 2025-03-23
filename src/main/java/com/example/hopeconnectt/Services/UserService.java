@@ -13,8 +13,7 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-/// try to implement the registerUser method
-/// noor 
+
     public User registerUser(RegistrationRequest request) {
         User user = new User();
         user.setUsername(request.getUsername());

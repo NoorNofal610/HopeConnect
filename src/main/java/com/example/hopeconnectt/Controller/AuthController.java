@@ -24,6 +24,5 @@ public class AuthController {
         return userService.registerUser(request);
     }
 
-    ///////noor comment
-    /// another comment
+    
 }
