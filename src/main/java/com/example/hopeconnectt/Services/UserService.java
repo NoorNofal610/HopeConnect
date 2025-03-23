@@ -11,6 +11,7 @@ public class UserService {
     private int x;
     
     private final UserRepository userRepository;
+    private int y;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
