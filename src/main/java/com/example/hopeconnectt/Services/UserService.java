@@ -17,7 +17,7 @@ public class UserService {
     public User registerUser(RegistrationRequest request) {
         User user = new User();
         user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword()); // Plain text password (not secure)
+        user.setPassword(request.getPassword()); 
         user.setRole(request.getRole());
         return userRepository.save(user);
     }
