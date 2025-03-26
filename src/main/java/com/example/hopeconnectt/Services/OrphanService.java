@@ -27,4 +27,6 @@ public class OrphanService {
     public void deleteOrphan(Long id) {
         orphanRepository.deleteById(id);
     }
+
+    
 }
