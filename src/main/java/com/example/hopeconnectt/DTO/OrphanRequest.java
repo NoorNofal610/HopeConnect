@@ -5,11 +5,11 @@ import com.example.hopeconnectt.Models.Entity.Orphan;
 import lombok.Data;
 
 @Data
-public class OrphanDTO {
+public class OrphanRequest {
     private String name;
     private int age;
     private String gender;
     private String educationStatus;
     private String healthCondition;
-    private Orphan orphanage;
+    private Long orphanageId;  // Just the ID, not full object
 }
