@@ -34,7 +34,7 @@ public class Orphan {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // @ManyToOne
-    // @JoinColumn(name = "orphanage_id", nullable = false)
-    // private Orphanage orphanage;
+    @ManyToOne
+    @JoinColumn(name = "orphanage_id", nullable = false)
+    private Orphanage orphanage;
 }
