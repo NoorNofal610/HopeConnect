@@ -1,8 +1,10 @@
 package com.example.hopeconnectt.Controller;
 
+import com.example.hopeconnectt.Models.Entity.Orphan;
 import com.example.hopeconnectt.Models.Entity.Orphanage;
 import com.example.hopeconnectt.Services.OrphanageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -42,4 +44,10 @@ public class OrphanageController {
     public void deleteOrphanage(@PathVariable Long id) {
         orphanageService.deleteOrphanage(id);
     }
+
+//     @GetMapping("/{orphanageId}/orphans")
+// public ResponseEntity<List<Orphan>> getOrphansByOrphanage(
+//         @PathVariable Long orphanageId) {
+//     return ResponseEntity.ok(orphanageService.getOrphansByOrphanageId(orphanageId));
+// }
 }

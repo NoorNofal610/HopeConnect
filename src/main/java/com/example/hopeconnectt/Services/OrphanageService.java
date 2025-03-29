@@ -1,6 +1,7 @@
 package com.example.hopeconnectt.Services;
 
 
+import com.example.hopeconnectt.Models.Entity.Orphan;
 import com.example.hopeconnectt.Models.Entity.Orphanage;
 import com.example.hopeconnectt.Reposotires.OrphanageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +37,10 @@ public class OrphanageService {
     public void deleteOrphanage(Long id) {
         orphanageRepository.deleteById(id);
     }
+
+    ////////////////
+//     public List<Orphan> getOrphansByOrphanageId(Long orphanageId) {
+//       return orphanageRepository.findById(id);
+// }
+
 }

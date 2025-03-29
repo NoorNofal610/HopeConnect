@@ -2,7 +2,11 @@ package com.example.hopeconnectt.Models.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -28,6 +32,10 @@ public class Orphanage {
     @Column(nullable = false)
     private double rating;
 
-    @OneToMany(mappedBy = "orphanage", cascade = CascadeType.ALL)
-    private List<Orphan> orphans;
+    // @OneToMany(mappedBy = "orphanage", cascade = CascadeType.ALL)
+    // //private List<Orphan> orphans;
+    // private List<Orphan> orphans = new ArrayList<>();
+    @OneToMany(mappedBy = "orphanage", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+private List<Orphan> orphans = new ArrayList<>();
 }

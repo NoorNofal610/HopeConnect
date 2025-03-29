@@ -1,42 +1,69 @@
 package com.example.hopeconnectt.Models.Entity;
 
-
 import jakarta.persistence.*;
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
 @Table(name = "orphans")
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Orphan {
+    
     @Id
+    @Column(name = "orphan_id")  
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "orphan_id")
     private Long id;
-
+    
     @Column(nullable = false)
     private String name;
-
+    
     @Column(nullable = false)
-    private int age;
-
+    private Integer age;
+    
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String gender;
-
+    private Gender gender;
+    
     @Column(name = "education_status", nullable = false)
     private String educationStatus;
-
-    @Column(name = "health_condition", nullable = false)
+    
+    @Column(name = "health_condition")
     private String healthCondition;
-
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @ManyToOne
+    
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orphanage_id", nullable = false)
     private Orphanage orphanage;
-    // @Column(name = "orphanage_id")
-    // private Long orphanageId;
+
+    public enum Gender {
+        MALE, FEMALE, OTHER
+    }
 }
+// import jakarta.persistence.*;
+// import lombok.Data;
+
+// @Entity
+// @Table(name = "orphans")
+// public class Orphan {
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long orphanId;
+
+//     private String name;
+//     private Integer age;
+    
+//     @Enumerated(EnumType.STRING)
+//     private String gender;
+    
+//     private String educationStatus;
+//     private String healthCondition;
+    
+//     @ManyToOne
+//     @JoinColumn(name = "orphanage_id", referencedColumnName = "orphanage_id")
+//     private Orphanage orphanage;
+    
+//     // Getters and setters
+//     // Constructors
+// }

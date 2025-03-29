@@ -17,12 +17,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
-@ActiveProfiles("test") // Uses test-specific configuration
-public class HopeconnecttApplicationTests {
-    
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+class HopeconnecttApplicationTests {
+
     @Test
-    public void contextLoads() {
-        // Empty test that just verifies Spring context loads
+    void contextLoads() {
+        // Test will pass if application context loads
     }
 }
