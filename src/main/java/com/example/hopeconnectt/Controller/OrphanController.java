@@ -62,6 +62,7 @@ public ResponseEntity<String> deleteOrphan(@PathVariable Long id) {
     }
 }
 
+//////////////////////////
     @GetMapping("/by-orphanage/{orphanageId}")
     public ResponseEntity<List<OrphanDTO>> getOrphansByOrphanage(
             @PathVariable Long orphanageId) {
