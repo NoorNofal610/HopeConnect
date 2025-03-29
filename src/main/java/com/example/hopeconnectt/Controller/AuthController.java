@@ -5,7 +5,10 @@ import com.example.hopeconnectt.Services.UserService;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,11 +38,16 @@ public class AuthController {
     public User registerUser(@RequestBody RegistrationRequest request) {
         return userService.registerUser(request);
     }
-    @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
+   @PostMapping("/login")
+public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+    try {
         User user = authService.authenticate(request.getUsername(), request.getPassword());
-        return "Welcome " + user.getRole().name().toLowerCase();
+        return ResponseEntity.ok("Welcome " + user.getRole().name().toLowerCase() + 
+                              ". A login notification has been sent to your email.");
+    } catch (UsernameNotFoundException | BadCredentialsException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
+}
      @GetMapping("/admin/users")
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
