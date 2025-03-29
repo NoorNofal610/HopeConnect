@@ -1,13 +1,17 @@
 package com.example.hopeconnectt.Controller;
 
+import com.example.hopeconnectt.DTO.OrphanageDTO;
+
 import com.example.hopeconnectt.Models.Entity.Orphan;
 import com.example.hopeconnectt.Models.Entity.Orphanage;
 import com.example.hopeconnectt.Services.OrphanageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/orphanages")
@@ -25,29 +29,62 @@ public class OrphanageController {
         return orphanageService.getOrphanageById(id);
     }
 
-    @GetMapping("/verified/{status}")
-    public List<Orphanage> getOrphanagesByVerificationStatus(@PathVariable boolean status) {
-        return orphanageService.getVerifiedOrphanages(status);
+
+    @GetMapping("/by-name/{name}")
+    public ResponseEntity<List<OrphanageDTO>> getOrphanagesByName(
+            @PathVariable String name) {
+        return ResponseEntity.ok(orphanageService.getOrphanagesByName(name));
     }
 
-    @GetMapping("/search")
-    public List<Orphanage> searchOrphanagesByLocation(@RequestParam String location) {
-        return orphanageService.searchOrphanagesByLocation(location);
+    @GetMapping("/by-location/{location}")
+    public ResponseEntity<List<OrphanageDTO>> getOrphanagesByLocation(
+            @PathVariable String location) {
+        List<OrphanageDTO> result = orphanageService.getOrphanagesByLocation(location);
+        return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/by-verified/{status}")
+    public ResponseEntity<List<OrphanageDTO>> getOrphanagesByVerificationStatus(
+            @PathVariable boolean status) {
+        return ResponseEntity.ok(orphanageService.getOrphanagesByVerificationStatus(status));
+    }
+
+///////////////////
 
     @PostMapping
     public Orphanage createOrphanage(@RequestBody Orphanage orphanage) {
         return orphanageService.saveOrphanage(orphanage);
     }
 
+    
     @DeleteMapping("/{id}")
-    public void deleteOrphanage(@PathVariable Long id) {
-        orphanageService.deleteOrphanage(id);
+    public ResponseEntity<String> deleteOrphanage(@PathVariable Long id) {
+        try {
+            if (orphanageService.existsById(id)) {
+                orphanageService.deleteOrphanage(id);
+                return ResponseEntity.ok("Orphanage with ID " + id + " deleted successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Orphanage with ID " + id + " not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting orphanage: " + e.getMessage());
+        }
     }
 
-//     @GetMapping("/{orphanageId}/orphans")
-// public ResponseEntity<List<Orphan>> getOrphansByOrphanage(
-//         @PathVariable Long orphanageId) {
-//     return ResponseEntity.ok(orphanageService.getOrphansByOrphanageId(orphanageId));
-// }
+    @PutMapping("/{id}")
+public ResponseEntity<String> updateOrphanage(
+        @PathVariable Long id,
+        @RequestBody Orphanage orphanageDetails) {
+    try {
+        Orphanage updatedOrphanage = orphanageService.updateOrphanage(id, orphanageDetails);
+        return ResponseEntity.ok("Orphanage with ID " + id + " updated successfully");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error updating orphanage: " + e.getMessage());
+    }
+}
+
+
 }

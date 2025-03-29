@@ -10,4 +10,12 @@ public interface OrphanageRepository extends JpaRepository<Orphanage, Long> {
     Optional<Orphanage> findById(Long id);
     List<Orphanage> findByVerifiedStatus(boolean verifiedStatus);
     List<Orphanage> findByLocationContaining(String location);
+    List<Orphanage> findByNameContaining(String name);
+    boolean existsById(Long id);
+
+    
+    List<Orphanage> findByName(String name);
+    List<Orphanage> findByLocation(String location);
+    
+   
 }
