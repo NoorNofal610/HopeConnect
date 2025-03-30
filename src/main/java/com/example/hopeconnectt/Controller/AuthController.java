@@ -3,6 +3,7 @@ import com.example.hopeconnectt.DTO.RegistrationRequest;
 import com.example.hopeconnectt.Models.Entity.User;
 import com.example.hopeconnectt.Services.UserService;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
  import com.example.hopeconnectt.DTO.LoginRequest;
-import com.example.hopeconnectt.Services.AuthenticationService;      
+import com.example.hopeconnectt.Services.AuthenticationService;
+import com.example.hopeconnectt.Services.EmailService;      
 
 
 
@@ -28,10 +30,13 @@ import com.example.hopeconnectt.Services.AuthenticationService;
 public class AuthController {
     private final UserService userService;
     private final AuthenticationService authService;
+private final EmailService emailService;
 
-    public AuthController(UserService userService, AuthenticationService authService) {
+    public AuthController(UserService userService, AuthenticationService authService,
+                          EmailService emailService) {
         this.userService = userService;
         this.authService = authService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/register")
@@ -67,5 +72,14 @@ public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("User with ID " + userId + " deleted successfully");
     }
-    
+    @GetMapping("/error-notification")
+    public String testErrorNotification() {
+        try {
+            throw new RuntimeException("This is a test error");
+        } catch (Exception e) {
+            emailService.sendErrorNotification(e.getMessage(), 
+                Arrays.toString(e.getStackTrace()));
+            return "Error notification sent to admin!";
+        }
+    }
 }

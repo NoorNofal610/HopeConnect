@@ -4,6 +4,7 @@ import com.example.hopeconnectt.Models.Entity.User;
 import  com.example.hopeconnectt.Reposotires.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,4 +49,8 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
+    // In UserService.java
+public Optional<User> findByUsername(String username) {
+    return userRepository.findByUsername(username);
+}
 }
