@@ -34,7 +34,7 @@ public class OrphanController {
         return ResponseEntity.ok(orphanService.createOrphan(orphan, orphanageId));
     }
 
-@PutMapping("/{id}")
+@PutMapping("/update/{id}")
 public ResponseEntity<String> updateOrphan(
         @PathVariable Long id,
         @RequestBody Orphan orphanDetails) {
@@ -46,7 +46,7 @@ public ResponseEntity<String> updateOrphan(
     }
 }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
 public ResponseEntity<String> deleteOrphan(@PathVariable Long id) {
     try {
         if (orphanService.existsById(id)) {
