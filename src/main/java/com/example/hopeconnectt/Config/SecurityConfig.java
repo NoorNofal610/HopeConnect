@@ -2,6 +2,7 @@ package com.example.hopeconnectt.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -44,17 +45,41 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
                 
                 // Admin-only endpoints
-                .requestMatchers("/api/auth/admin/").hasRole("ADMIN")
-            
+                .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/donations/approve").hasRole("ADMIN")
+                .requestMatchers("/api/orphans/**","/api/orphanages/**","/api/donors/**","/api/donations/**").hasRole("ADMIN")
                 
                 // Orphanage Manager endpoints
-                .requestMatchers("/api/orphans","/api/orphans/{id}","/api/orphans/by-orphanage/{orphanageId}", "/api/orphans/by-age","/api/orphans/by-education","/api/orphans/by-gender/{gender}").permitAll()
-                .requestMatchers("/api/orphans/update/{id}","/api/orphans/delete/{id}").hasRole("ORPHANAGE_MANAGER")
-                .requestMatchers("/api/orphanage/").hasRole("ORPHANAGE_MANAGER")
+                // Read-only endpoints (permit all or authenticated)
+                .requestMatchers(
+                    "/api/orphans",
+                    "/api/orphans/{id}","/api/orphans/by-orphanage/{orphanageId}", 
+                    "/api/orphans/by-age",
+                    "/api/orphans/by-education",
+                    "/api/orphans/by-gender/{gender}"
+                ).permitAll()
                 
-                // Shared endpoints
-               // .requestMatchers("/api/donations/view").hasAnyRole("ADMIN", "ORPHANAGE_MANAGER")
+                // Orphan 
+                .requestMatchers(
+                    
+                    "/api/orphans/delete/{id}",
+                    "/api/orphans/update/{id}"
+                ).hasRole("ORPHANAGE_MANAGER")
+                
+                // Orphanage 
+                .requestMatchers("/api/orphanages/update/{id}","/api/orphanages/delete/{id}").hasRole("ORPHANAGE_MANAGER")
+                .requestMatchers(
+                    "/api/orphanages","/api/orphanages/{id}","/api/orphanages/by-name/{name}","/api/orphanages/by-location/{location}","/api/orphanages/by-verified/{status}"
+                ).permitAll()
+                
+
+                // Donor endpoints (public)
+                //.requestMatchers("/api/donors/**").hasAnyRole("ADMIN")
+                // sponsorships
+                .requestMatchers( "/api/sponsorships/**").authenticated()
+                .requestMatchers( "/api/sponsorships").hasAnyRole("ADMIN")
+                .requestMatchers( "/api/sponsorships/**/status").hasRole("ADMIN")
+
                 
                 .anyRequest().authenticated()
             )

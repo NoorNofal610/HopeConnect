@@ -2,7 +2,9 @@ package com.example.hopeconnectt.Controller;
 
 import com.example.hopeconnectt.DTO.OrphanageDTO;
 
+
 import com.example.hopeconnectt.Models.Entity.Orphan;
+
 import com.example.hopeconnectt.Models.Entity.Orphanage;
 import com.example.hopeconnectt.Services.OrphanageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +59,7 @@ public class OrphanageController {
     }
 
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteOrphanage(@PathVariable Long id) {
         try {
             if (orphanageService.existsById(id)) {
@@ -73,7 +75,7 @@ public class OrphanageController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
 public ResponseEntity<String> updateOrphanage(
         @PathVariable Long id,
         @RequestBody Orphanage orphanageDetails) {

@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
- import com.example.hopeconnectt.DTO.LoginRequest;
+import com.example.hopeconnectt.DTO.DonationDTO;
+import com.example.hopeconnectt.DTO.LoginRequest;
 import com.example.hopeconnectt.Services.AuthenticationService;
 import com.example.hopeconnectt.Services.EmailService;      
 
@@ -85,4 +86,10 @@ public ResponseEntity<User> getUserById(@PathVariable Long userId) {
             return "Error notification sent to admin!";
         }
     }
+
+//     @PostMapping
+// public ResponseEntity<DonationDTO> createDonation(@RequestBody DonationDTO donationDTO) {
+//     DonationDTO createdDonation = donationService.createDonation(donationDTO);
+//     return ResponseEntity.status(HttpStatus.CREATED).body(createdDonation);
+// }
 }
