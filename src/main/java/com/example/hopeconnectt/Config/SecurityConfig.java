@@ -2,6 +2,7 @@ package com.example.hopeconnectt.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -18,30 +19,65 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        // Create in-memory admin user
+        // Admin user
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder().encode("admin123"))
-                .roles("ADMIN") // This automatically adds ROLE_ prefix
+                .roles("ADMIN")
                 .build();
         
-        return new InMemoryUserDetailsManager(admin);
+        // Orphanage Manager user
+        UserDetails manager = User.builder()
+                .username("Ali")
+                .password(passwordEncoder().encode("321"))
+                .roles("ORPHANAGE_MANAGER")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin, manager);
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Disabled for API testing
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/register").permitAll()
-                .requestMatchers("/api/auth/login").permitAll()
-                .requestMatchers("/api/auth/error-notification").permitAll()
-                .requestMatchers("/api/auth/admin/**").hasRole("ADMIN") // Uses ROLE_ADMIN internally
+                // Public endpoints
+                .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+                
+                // Admin-only endpoints
+                .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/donations/approve").hasRole("ADMIN")
+                
+                // Orphanage Manager endpoints
+                // Read-only endpoints (permit all or authenticated)
+                .requestMatchers(
+                    "/api/orphans/by-orphanage/{orphanageId}", 
+                    "/api/orphans/by-age",
+                    "/api/orphans/by-education",
+                    "/api/orphans/by-gender/{gender}"
+                ).permitAll()
+                
+                // Orphan management endpoints
+                .requestMatchers(
+                    "/api/orphans",
+                    "/api/orphans/{id}",
+                    "/api/orphans/delete/{id}",
+                    "/api/orphans/update/{id}"
+                ).hasRole("ORPHANAGE_MANAGER")
+                
+                // Orphanage management endpoints
+                .requestMatchers("/api/orphanages/**").hasRole("ORPHANAGE_MANAGER")
+                
+                // Donor endpoints (public)
+                .requestMatchers("/api/donors/**").permitAll()
+                .requestMatchers( "/api/sponsorships/**").authenticated()
+                .requestMatchers( "/api/sponsorships").hasAnyRole("ADMIN")
+                .requestMatchers( "/api/sponsorships/**/status").hasRole("ADMIN")
+                
                 .anyRequest().authenticated()
             )
-            .formLogin(form -> form.disable()) // Disable form login
-            .httpBasic(basic -> {}); // Configure HTTP Basic authentication
-
+            .httpBasic(basic -> {});
+        
         return http.build();
     }
 

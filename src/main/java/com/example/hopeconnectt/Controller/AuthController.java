@@ -28,6 +28,9 @@ import com.example.hopeconnectt.Services.EmailService;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    ///////Another comment to test merge
+    /// nooor
     private final UserService userService;
     private final AuthenticationService authService;
 private final EmailService emailService;
