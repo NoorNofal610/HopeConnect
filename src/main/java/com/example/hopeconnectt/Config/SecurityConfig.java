@@ -47,7 +47,7 @@ public class SecurityConfig {
                 // Admin-only endpoints
                 .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/donations/approve").hasRole("ADMIN")
-                .requestMatchers("/api/orphans/**","/api/orphanages/**","/api/donors/**","/api/donations/**").hasRole("ADMIN")
+                .requestMatchers("/api/orphans/**","/api/orphanages/**","/api/donors/**","/api/donations/**","/api/logistics/**").hasRole("ADMIN")
                 
                 // Orphanage Manager endpoints
                 // Read-only endpoints (permit all or authenticated)

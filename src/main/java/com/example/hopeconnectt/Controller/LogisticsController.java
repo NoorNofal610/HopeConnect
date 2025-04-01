@@ -34,7 +34,36 @@ public class LogisticsController {
         return ResponseEntity.ok(logisticsService.getLogisticsById(id));
     }
 
-    // Update logistics
+    
+
+    // Get logistics by donation ID
+    @GetMapping("/donation/{donationId}")
+    public ResponseEntity<List<LogisticsDTO>> getLogisticsByDonationId(@PathVariable Long donationId) {
+        return ResponseEntity.ok(logisticsService.getLogisticsByDonationId(donationId));
+    }
+
+    // Get logistics by status
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<LogisticsDTO>> getLogisticsByStatus(@PathVariable String status) {
+        return ResponseEntity.ok(logisticsService.getLogisticsByStatus(status));
+    }
+
+    // Get logistics by pickup location
+    @GetMapping("/pickup-location")
+    public ResponseEntity<List<LogisticsDTO>> getLogisticsByPickupLocation(
+            @RequestParam String location) {
+        return ResponseEntity.ok(logisticsService.getLogisticsByPickupLocation(location));
+    }
+
+    // Get logistics by delivery location
+    @GetMapping("/delivery-location")
+    public ResponseEntity<List<LogisticsDTO>> getLogisticsByDeliveryLocation(
+            @RequestParam String location) {
+        return ResponseEntity.ok(logisticsService.getLogisticsByDeliveryLocation(location));
+    }
+
+    ////////////////////////////
+    /// // Update logistics
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateLogistics(
             @PathVariable Long id,
@@ -63,31 +92,5 @@ public class LogisticsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error deleting logistics: " + e.getMessage());
         }
-    }
-
-    // Get logistics by donation ID
-    @GetMapping("/donation/{donationId}")
-    public ResponseEntity<List<LogisticsDTO>> getLogisticsByDonationId(@PathVariable Long donationId) {
-        return ResponseEntity.ok(logisticsService.getLogisticsByDonationId(donationId));
-    }
-
-    // Get logistics by status
-    @GetMapping("/status/{status}")
-    public ResponseEntity<List<LogisticsDTO>> getLogisticsByStatus(@PathVariable String status) {
-        return ResponseEntity.ok(logisticsService.getLogisticsByStatus(status));
-    }
-
-    // Get logistics by pickup location
-    @GetMapping("/pickup-location")
-    public ResponseEntity<List<LogisticsDTO>> getLogisticsByPickupLocation(
-            @RequestParam String location) {
-        return ResponseEntity.ok(logisticsService.getLogisticsByPickupLocation(location));
-    }
-
-    // Get logistics by delivery location
-    @GetMapping("/delivery-location")
-    public ResponseEntity<List<LogisticsDTO>> getLogisticsByDeliveryLocation(
-            @RequestParam String location) {
-        return ResponseEntity.ok(logisticsService.getLogisticsByDeliveryLocation(location));
     }
 }
