@@ -36,4 +36,6 @@ public class Orphanage {
     @OneToMany(mappedBy = "orphanage", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
 private List<Orphan> orphans = new ArrayList<>();
+@OneToMany(mappedBy = "orphanage")
+    private List<Review> reviews;
 }

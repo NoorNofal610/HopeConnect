@@ -79,4 +79,12 @@ public List<Sponsorship> getSponsorshipsByOrphan(Long orphanId) {
     public List<Sponsorship> getSponsorshipsBetweenDates(LocalDate start, LocalDate end) {
         return sponsorshipRepository.findByStartDateBetween(start, end);
     }
+    // In your service:
+public void deleteSponsorship(Long sponsorshipId) {
+    if (!sponsorshipRepository.existsById(sponsorshipId)) {
+        throw new EntityNotFoundException("Sponsorship not found");
+    }
+    sponsorshipRepository.deleteById(sponsorshipId);
+}
+    
 }

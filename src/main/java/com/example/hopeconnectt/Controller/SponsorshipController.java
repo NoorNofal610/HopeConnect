@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.Map;
 
@@ -110,6 +110,29 @@ public ResponseEntity<?> getSponsorshipsBetweenDates(
         return ResponseEntity.internalServerError().body(
             Map.of("error", "Failed to fetch sponsorships by date range")
         );
+    }
+}
+@DeleteMapping("/{sponsorshipId}")
+public ResponseEntity<Map<String, Object>> deleteSponsorship(@PathVariable Long sponsorshipId) {
+    try {
+        sponsorshipService.deleteSponsorship(sponsorshipId);
+        return ResponseEntity.ok(
+            Map.of(
+                "status", "success",
+                "message", "Sponsorship deleted successfully"
+            ));
+    } catch (EntityNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+            Map.of(
+                "status", "error",
+                "message", e.getMessage()
+            ));
+    } catch (Exception e) {
+        return ResponseEntity.internalServerError().body(
+            Map.of(
+                "status", "error",
+                "message", "Failed to delete sponsorship: " + e.getMessage()
+            ));
     }
 }
 }

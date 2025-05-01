@@ -1,6 +1,10 @@
 package com.example.hopeconnectt.Models.Entity;
 
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,5 +25,8 @@ public class Donor {
     private String address;
     private String donationHistory;
     private String preferences;
+    @OneToMany(mappedBy = "donor", cascade = CascadeType.ALL)
+@JsonManagedReference("donor-reviews")
+private List<Review> reviews;
 }
 
