@@ -220,6 +220,5 @@ Respond to volunteer applications.
 
 # 📱 Contact
 
-* Noor Nofal-[noornofal610@gmail.com](noornofal610@gmail.com)
-
-* Rema abu alnaser-[remaabualnaser570@gmail.com](remaabualnaser570@gmail.com)
+ - [Compose to Rema via Gmail](https://mail.google.com/mail/?view=cm&fs=1&to=remaabualnaser570@gmail.com)
+- [Compose to Noor via Gmail](https://mail.google.com/mail/?view=cm&fs=1&to=noornofal610@gmail.com)
