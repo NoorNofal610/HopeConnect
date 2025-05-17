@@ -11,6 +11,28 @@
 The platform aims to bridge the gap between donors, sponsors, volunteers, and orphanages by providing a secure, transparent, and efficient system for managing donations, sponsorships, and volunteer services.
 By leveraging modern API technologies and robust database management, HopeConnect ensures that resources reach the children who need them most while maintaining trust and accountability among all stakeholders.
 
+  
+# 📋 Table of Contents
+- [🌟 About the Project](#-about-the-project)
+- [🔨 Built With](#-built-with)
+- [🚀 Getting Started](#-getting-started)
+  - [⚙ Running the project](#-running-the-project)
+- [💡 Main Features](#-main-features)
+  - [📑 Orphan Profiles & Sponsorships](#-orphan-profiles--sponsorships)
+  - [💰 Donation Management System](#-donation-management-system)
+  - [🛠 Volunteer & Service Matching](#-volunteer--service-matching)
+  - [👍 Trust & Transparency](#-trust--transparency)
+  - [🚨 Emergency Support System](#-emergency-support-system)
+  - [🚚 Logistics & Resource Distribution](#-logistics--resource-distribution)
+  - [💸 Revenue Model & Sustainability](#-revenue-model--sustainability)
+- [👥 Roles](#-roles)
+  - [1. Admin](#1-admin)
+  - [2. Donor/Sponsor](#2-donorsponsor)
+  - [3. Volunteer](#3-volunteer)
+  - [4. Orphanage/NGO Representative](#4-orphanagengo-representative)
+- [📱 Contact](#-contact)
+
+  
 # 🔨 Built With
 
 ### SPRING BOOT
