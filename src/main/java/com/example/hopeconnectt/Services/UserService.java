@@ -1,5 +1,6 @@
 package com.example.hopeconnectt.Services;
 import com.example.hopeconnectt.DTO.RegistrationRequest;
+import com.example.hopeconnectt.Exceptions.UserNotFoundException;
 import com.example.hopeconnectt.Models.Entity.User;
 import  com.example.hopeconnectt.Reposotires.UserRepository;
 
@@ -16,7 +17,6 @@ public class UserService {
 
    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
 
 
 
@@ -41,17 +41,18 @@ public class UserService {
 
     // NEW: Delete user by ID
     public void deleteUser(Long userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new RuntimeException("User not found with id: " + userId);
-        }
-        userRepository.deleteById(userId); // Uses built-in JpaRepository method
+    if (!userRepository.existsById(userId)) {
+        throw new UserNotFoundException("User not found with id: " + userId);
     }
+    userRepository.deleteById(userId);
+}
 
-    // Optional: Get user by ID
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
+
+   public User getUserById(Long userId) {
+    return userRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
+}
+
     // In UserService.java
 public Optional<User> findByUsername(String username) {
     return userRepository.findByUsername(username);

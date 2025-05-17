@@ -8,5 +8,7 @@ public interface DonorRepository extends JpaRepository<Donor, Long> {
     List<Donor> findByNameContaining(String name);
     List<Donor> findByNameContainingIgnoreCase(String name);
     List<Donor> findByAddressContainingIgnoreCase(String address);
+    List<Donor> findByPreferencesIgnoreCaseContaining(String keyword);
+
 
 }

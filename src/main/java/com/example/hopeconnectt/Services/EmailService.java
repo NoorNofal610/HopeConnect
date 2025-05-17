@@ -77,4 +77,27 @@ public class EmailService {
         message.setFrom(senderEmail);
         return message;
     }
+    // New method: Notify donors about urgent campaigns
+public void sendUrgentCampaignNotification(String toEmail, String campaignTitle, String campaignDescription, Double targetAmount) {
+    SimpleMailMessage message = createBaseMessage();
+    message.setTo(toEmail);
+    message.setSubject("🚨 Urgent Campaign Needs Your Help: " + campaignTitle);
+    message.setText(String.format("""
+        Dear Donor,
+
+        An urgent campaign has been launched to support children in need:
+
+        Title: %s
+        Description: %s
+        Target Amount: $%.2f
+
+        Your support can make a big difference right now. Please consider donating or spreading the word.
+
+        Thank you,
+        HopeConnect Team
+        """, campaignTitle, campaignDescription, targetAmount));
+
+    mailSender.send(message);
+}
+
 }

@@ -1,35 +1,34 @@
 package com.example.hopeconnectt.Models.Entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import com.example.hopeconnectt.Models.Enumes.ErrorSeverity;
 
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-@Table(name = "error_logs")
+@Table(name = "errorlogs")
+
 public class ErrorLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long logId;
+    private Long id;
 
-    @CreationTimestamp
+    private String message;
+
     private LocalDateTime timestamp;
 
-    @Column(columnDefinition = "TEXT")
-    private String errorMessage;
+    // Optional: Add fields like exceptionType, stackTrace, etc.
 
-    @Enumerated(EnumType.STRING)
-    private ErrorSeverity severity;
+    // Constructors
+    public ErrorLog() {}
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    public ErrorLog(String message, LocalDateTime timestamp) {
+        this.message = message;
+        this.timestamp = timestamp;
+    }
 
-    private String sourceClass;
-    private String sourceMethod;
-    private String stackTrace;
+    // Getters and Setters
 }
 

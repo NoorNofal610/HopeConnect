@@ -2,10 +2,6 @@ package com.example.hopeconnectt.DTO;
 
 
 
-import org.antlr.v4.runtime.misc.NotNull;
-
-
-
 import com.example.hopeconnectt.Models.Enumes.UserRole;
 
 public class RegistrationRequest {

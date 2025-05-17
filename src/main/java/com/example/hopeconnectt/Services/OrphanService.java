@@ -1,12 +1,24 @@
 package com.example.hopeconnectt.Services;
 
 import com.example.hopeconnectt.DTO.OrphanDTO;
+import com.example.hopeconnectt.Exceptions.InvalidProfileException;
+import com.example.hopeconnectt.Exceptions.OrphanNotFoundException;
 import com.example.hopeconnectt.Models.Entity.Orphan;
 import com.example.hopeconnectt.Models.Entity.Orphanage;
 import com.example.hopeconnectt.Reposotires.OrphanRepository;
 import com.example.hopeconnectt.Reposotires.OrphanageRepository;
+
+import jakarta.annotation.Resource;
+import jakarta.persistence.criteria.Path;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.core.io.AbstractFileResolvingResource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+
+import java.net.MalformedURLException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,11 +34,23 @@ public class OrphanService {
                 .collect(Collectors.toList());
     }
 
+    // public OrphanDTO getOrphanById(Long id) {
+    //     return orphanRepository.findById(id)
+    //             .map(this::convertToDTO)
+    //             .orElseThrow(() -> new RuntimeException("Orphan not found"));
+    // }
     public OrphanDTO getOrphanById(Long id) {
-        return orphanRepository.findById(id)
-                .map(this::convertToDTO)
-                .orElseThrow(() -> new RuntimeException("Orphan not found"));
+    Orphan orphan = orphanRepository.findById(id)
+            .orElseThrow(() -> new OrphanNotFoundException("Orphan with ID " + id + " not found."));
+
+    // Let's say you want to validate the profile before converting it to DTO
+    if (orphan.getName() == null || orphan.getAge() == null) {
+        throw new InvalidProfileException("Orphan profile is incomplete or invalid.");
     }
+
+    return convertToDTO(orphan);
+}
+
 
     public Orphan createOrphan(Orphan orphan, Long orphanageId) {
         Orphanage orphanage = orphanageRepository.findById(orphanageId)
@@ -47,27 +71,27 @@ public class OrphanService {
         
     //     return orphanRepository.save(orphan);
     // }
-    public Orphan updateOrphan(Long id, Orphan orphanDetails) {
-        return orphanRepository.findById(id)
-                .map(existingOrphan -> {
-                    // Update only the fields you want to allow modification for
-                    existingOrphan.setName(orphanDetails.getName());
-                    existingOrphan.setAge(orphanDetails.getAge());
-                    existingOrphan.setGender(orphanDetails.getGender());
-                    existingOrphan.setEducationStatus(orphanDetails.getEducationStatus());
-                    existingOrphan.setHealthCondition(orphanDetails.getHealthCondition());
-                    
-                    // Don't update the orphanage relationship here to avoid issues
-                    // existingOrphan.setOrphanage(orphanDetails.getOrphanage());
-                    
-                    return orphanRepository.save(existingOrphan);
-                })
-                .orElseThrow(() -> new RuntimeException("Orphan not found with id " + id));
-    }
+  public Orphan updateOrphan(Long id, Orphan orphanDetails) {
+    return orphanRepository.findById(id)
+            .map(existingOrphan -> {
+                existingOrphan.setName(orphanDetails.getName());
+                existingOrphan.setAge(orphanDetails.getAge());
+                existingOrphan.setGender(orphanDetails.getGender());
+                existingOrphan.setEducationStatus(orphanDetails.getEducationStatus());
+                existingOrphan.setHealthCondition(orphanDetails.getHealthCondition());
+                return orphanRepository.save(existingOrphan);
+            })
+            .orElseThrow(() -> new OrphanNotFoundException("Orphan with ID " + id + " not found."));
+}
+
 
     public void deleteOrphan(Long id) {
-        orphanRepository.deleteById(id);
+    if (!orphanRepository.existsById(id)) {
+        throw new OrphanNotFoundException("Orphan with ID " + id + " not found.");
     }
+    orphanRepository.deleteById(id);
+}
+
 
     public List<OrphanDTO> getOrphansByOrphanage(Long orphanageId) {
         return orphanRepository.findByOrphanageId(orphanageId).stream()
@@ -115,4 +139,23 @@ public class OrphanService {
     public boolean existsById(Long id) {
         return orphanRepository.existsById(id);
     }
+   
+@Transactional
+public void updatePhotoPath(Long orphanId, String photoPath) {
+    Orphan orphan = orphanRepository.findById(orphanId)
+            .orElseThrow(() -> new OrphanNotFoundException("Orphan with ID " + orphanId + " not found."));
+    orphan.setPhotoPath(photoPath);
+    orphanRepository.save(orphan);
+}
+
+public Resource loadOrphanPhoto(String filename) throws MalformedURLException {
+    Path file = (Path) Paths.get("uploads/orphan-photos/").resolve(filename);
+    Resource resource = (Resource) new UrlResource(((java.nio.file.Path) file).toUri());
+    if (((AbstractFileResolvingResource) resource).exists() || ((AbstractFileResolvingResource) resource).isReadable()) {
+        return resource;
+    } else {
+        throw new RuntimeException("Could not read file: " + filename);
+    }
+}
+
 }

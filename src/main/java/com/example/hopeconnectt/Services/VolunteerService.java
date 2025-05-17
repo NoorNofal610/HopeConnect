@@ -1,5 +1,6 @@
 package com.example.hopeconnectt.Services;
 
+import com.example.hopeconnectt.Exceptions.VolunteerNotFoundException;
 import com.example.hopeconnectt.Models.Entity.Volunteer;
 import com.example.hopeconnectt.Reposotires.VolunteerRepository;
 
@@ -23,10 +24,10 @@ public class VolunteerService {
         return volunteerRepository.findAll();
     }
 
-    public Volunteer getVolunteerById(Long id) {
-        return volunteerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Volunteer not found"));
-    }
+   public Volunteer getVolunteerById(Long id) {
+    return volunteerRepository.findById(id)
+            .orElseThrow(() -> new VolunteerNotFoundException("Volunteer not found with id: " + id));
+}
 
     public List<Volunteer> getVolunteersBySkill(String skill) {
         return volunteerRepository.findBySkillsContaining(skill);
@@ -36,12 +37,11 @@ public class VolunteerService {
         return volunteerRepository.findByAvailabilityContaining(availability);
     }
 
-   @Transactional
+ @Transactional
 public Volunteer updateVolunteer(Long id, Volunteer volunteerDetails) {
     Volunteer volunteer = volunteerRepository.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Volunteer not found with id: " + id));
-    
-    // Partial update - only modify provided fields
+            .orElseThrow(() -> new VolunteerNotFoundException("Volunteer not found with id: " + id));
+
     if (volunteerDetails.getName() != null) {
         volunteer.setName(volunteerDetails.getName());
     }
@@ -51,12 +51,15 @@ public Volunteer updateVolunteer(Long id, Volunteer volunteerDetails) {
     if (volunteerDetails.getSkills() != null) {
         volunteer.setSkills(volunteerDetails.getSkills());
     }
-    // Add other fields similarly
-    
+
     return volunteerRepository.save(volunteer);
 }
 
     public void deleteVolunteer(Long id) {
-        volunteerRepository.deleteById(id);
+    if (!volunteerRepository.existsById(id)) {
+        throw new VolunteerNotFoundException("Volunteer not found with id: " + id);
     }
+    volunteerRepository.deleteById(id);
+}
+
 }

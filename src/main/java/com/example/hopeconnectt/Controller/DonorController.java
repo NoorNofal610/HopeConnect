@@ -51,7 +51,7 @@ public ResponseEntity<List<DonorDTO>> getDonorsByAddress(
     // public void deleteDonor(@PathVariable Long id) {
     //     donorService.deleteDonor(id);
     // }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
 public ResponseEntity<String> deleteDonor(@PathVariable Long id) {
     try {
         if (donorService.existsById(id)) {
@@ -67,7 +67,7 @@ public ResponseEntity<String> deleteDonor(@PathVariable Long id) {
     }
 }
 ///////////////////////
-@PutMapping("/{id}")
+@PutMapping("/update/{id}")
 public ResponseEntity<String> updateDonor(
         @PathVariable Long id,
         @RequestBody Donor donorDetails) {

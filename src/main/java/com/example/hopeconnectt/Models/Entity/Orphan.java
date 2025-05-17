@@ -3,11 +3,7 @@ package com.example.hopeconnectt.Models.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "orphans")
@@ -38,6 +34,8 @@ public class Orphan {
     
     @Column(name = "health_condition")
     private String healthCondition;
+    @Column
+    private String photoPath;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orphanage_id", nullable = false)

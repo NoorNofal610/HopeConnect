@@ -1,6 +1,9 @@
 package com.example.hopeconnectt.Controller;
 
 import com.example.hopeconnectt.DTO.OrphanageDTO;
+
+
+
 import com.example.hopeconnectt.Models.Entity.Orphanage;
 import com.example.hopeconnectt.Services.OrphanageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +25,11 @@ public class OrphanageController {
         return orphanageService.getAllOrphanages();
     }
 
-    @GetMapping("/{id}")
-    public Optional<Orphanage> getOrphanageById(@PathVariable Long id) {
-        return orphanageService.getOrphanageById(id);
-    }
+  @GetMapping("/{id}")
+public ResponseEntity<Orphanage> getOrphanageById(@PathVariable Long id) {
+    Orphanage orphanage = orphanageService.getOrphanageById(id); // No Optional here
+    return ResponseEntity.ok(orphanage);
+}
 
 
     @GetMapping("/by-name/{name}")
@@ -55,7 +59,7 @@ public class OrphanageController {
     }
 
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteOrphanage(@PathVariable Long id) {
         try {
             if (orphanageService.existsById(id)) {
@@ -71,12 +75,11 @@ public class OrphanageController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
 public ResponseEntity<String> updateOrphanage(
         @PathVariable Long id,
         @RequestBody Orphanage orphanageDetails) {
     try {
-        Orphanage updatedOrphanage = orphanageService.updateOrphanage(id, orphanageDetails);
         return ResponseEntity.ok("Orphanage with ID " + id + " updated successfully");
     } catch (Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

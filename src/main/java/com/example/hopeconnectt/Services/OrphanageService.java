@@ -1,6 +1,7 @@
 package com.example.hopeconnectt.Services;
 
 import com.example.hopeconnectt.DTO.OrphanageDTO;
+import com.example.hopeconnectt.Exceptions.OrphanageNotFoundException;
 import com.example.hopeconnectt.Models.Entity.Orphan;
 import com.example.hopeconnectt.Models.Entity.Orphanage;
 import com.example.hopeconnectt.Reposotires.OrphanageRepository;
@@ -19,9 +20,12 @@ public class OrphanageService {
         return orphanageRepository.findAll();
     }
 
-    public Optional<Orphanage> getOrphanageById(Long id) {
-        return orphanageRepository.findById(id);
-    }
+public Orphanage getOrphanageById(Long id) {
+    return orphanageRepository.findById(id)
+            .orElseThrow(() -> new OrphanageNotFoundException("Orphanage not found with id " + id));
+}
+
+
 
     public List<Orphanage> getVerifiedOrphanages(boolean verifiedStatus) {
         return orphanageRepository.findByVerifiedStatus(verifiedStatus);
@@ -76,33 +80,37 @@ public class OrphanageService {
     ///////////////////////////
 
     public void deleteOrphanage(Long id) {
-        orphanageRepository.deleteById(id);
+    if (!orphanageRepository.existsById(id)) {
+        throw new OrphanageNotFoundException("Orphanage with ID " + id + " not found.");
     }
+    orphanageRepository.deleteById(id);
+}
+
 
     public boolean existsById(Long id) {
         return orphanageRepository.existsById(id);
     }
 
     public Orphanage updateOrphanage(Long id, Orphanage orphanageDetails) {
-        return orphanageRepository.findById(id)
-                .map(existingOrphanage -> {
-                    // Update only non-null fields
-                    if (orphanageDetails.getName() != null) {
-                        existingOrphanage.setName(orphanageDetails.getName());
-                    }
-                    if (orphanageDetails.getLocation() != null) {
-                        existingOrphanage.setLocation(orphanageDetails.getLocation());
-                    }
-                    if (orphanageDetails.getContactInfo() != null) {
-                        existingOrphanage.setContactInfo(orphanageDetails.getContactInfo());
-                    }
-                    existingOrphanage.setVerifiedStatus(orphanageDetails.isVerifiedStatus());
-                    existingOrphanage.setRating(orphanageDetails.getRating());
-                    
-                    return orphanageRepository.save(existingOrphanage);
-                })
-                .orElseThrow(() -> new RuntimeException("Orphanage not found with id " + id));
-    }
+    return orphanageRepository.findById(id)
+            .map(existingOrphanage -> {
+                if (orphanageDetails.getName() != null) {
+                    existingOrphanage.setName(orphanageDetails.getName());
+                }
+                if (orphanageDetails.getLocation() != null) {
+                    existingOrphanage.setLocation(orphanageDetails.getLocation());
+                }
+                if (orphanageDetails.getContactInfo() != null) {
+                    existingOrphanage.setContactInfo(orphanageDetails.getContactInfo());
+                }
+                existingOrphanage.setVerifiedStatus(orphanageDetails.isVerifiedStatus());
+                existingOrphanage.setRating(orphanageDetails.getRating());
+
+                return orphanageRepository.save(existingOrphanage);
+            })
+            .orElseThrow(() -> new OrphanageNotFoundException("Orphanage with ID " + id + " not found."));
+}
+
    
 
 }

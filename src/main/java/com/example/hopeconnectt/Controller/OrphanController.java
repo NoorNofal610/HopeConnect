@@ -6,16 +6,29 @@ import com.example.hopeconnectt.Models.Entity.Orphan;
 import com.example.hopeconnectt.Services.OrphanService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.*;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/orphans")
 @RequiredArgsConstructor
 public class OrphanController {
     private final OrphanService orphanService;
+    @Value("${file.upload-dir}")
+private String uploadDir;
 
     @GetMapping
     public ResponseEntity<List<OrphanDTO>> getAllOrphans() {
@@ -87,4 +100,49 @@ public ResponseEntity<String> deleteOrphan(@PathVariable Long id) {
             @PathVariable Orphan.Gender gender) {
         return ResponseEntity.ok(orphanService.getOrphansByGender(gender));
     }
+
+    /**
+ * Upload a photo for a specific orphan.
+ */
+@PostMapping("/{id}/upload-photo")
+public ResponseEntity<String> uploadOrphanPhoto(
+        @PathVariable Long id,
+        @RequestParam("file") MultipartFile file) {
+    try {
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path filePath = Paths.get(uploadDir).resolve(fileName);
+        Files.createDirectories(filePath.getParent());
+        Files.write(filePath, file.getBytes());
+
+        orphanService.updatePhotoPath(id, fileName); // Update DB
+
+        return ResponseEntity.ok("Photo uploaded successfully");
+    } catch (IOException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Failed to upload image: " + e.getMessage());
+    }
+}
+/**
+ * Get the uploaded photo by filename.
+ */
+@GetMapping("/photo/{filename:.+}")
+public ResponseEntity<Resource> getOrphanPhoto(@PathVariable("filename") String filename) {
+    try {
+        Path filePath = Paths.get("uploads").resolve(filename).normalize();
+        Resource resource = new UrlResource(filePath.toUri());
+        if (resource.exists() && resource.isReadable()) {
+            String contentType = "image/jpeg"; // or detect dynamically
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(resource);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    } catch (MalformedURLException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+}
+
+
+
 }

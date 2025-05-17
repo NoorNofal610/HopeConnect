@@ -1,6 +1,7 @@
 package com.example.hopeconnectt.Services;
 
 import com.example.hopeconnectt.Models.Enumes.UserRole;
+import com.example.hopeconnectt.Exceptions.UnauthorizedAccessException;
 import com.example.hopeconnectt.Models.Entity.User;
 import com.example.hopeconnectt.Reposotires.UserRepository;
 import org.springframework.mail.SimpleMailMessage;
@@ -25,18 +26,31 @@ public class AuthenticationService {
         this.mailSender = mailSender;
     }
 
+    // @Transactional
+    // public User authenticate(String username, String password) {
+    //     User user = userRepository.findByUsername(username)
+    //             .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        
+    //     if (!passwordEncoder.matches(password, user.getPassword())) {
+    //         throw new BadCredentialsException("Invalid password");
+    //     }
+        
+    //     sendLoginNotification(user);
+    //     return user;
+    // }
     @Transactional
-    public User authenticate(String username, String password) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
-        
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("Invalid password");
-        }
-        
-        sendLoginNotification(user);
-        return user;
+public User authenticate(String username, String password) {
+    User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+    
+    if (!passwordEncoder.matches(password, user.getPassword())) {
+        throw new UnauthorizedAccessException("Invalid password");
     }
+    
+    sendLoginNotification(user);
+    return user;
+}
+
 
     public boolean hasPermission(User user, UserRole requiredRole) {
         return user.getRole() == requiredRole;
