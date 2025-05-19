@@ -2,7 +2,7 @@
     <img src="https://github.com/NoorNofal610/HopeConnect/blob/main/hopeConnect.png" alt="HopeConnect" width="500" height="400">
     <h1>Lighting the Path of Hope</h1>
     <a href="#" style="margin-right: 60px;">👾 View Demo</a>
-    <a href="#">🐞 Report Bug</a>
+    <a href="https://github.com/NoorNofal610/HopeConnect/issues/new?labels=bug&template=bug_report.md">🐞 Report Bug</a>
 </div>
 
 # 🌟 About the Project
@@ -18,6 +18,7 @@ By leveraging modern API technologies and robust database management, HopeConnec
 - [ Getting Started](#-getting-started)
 - [ Main Features](#-main-features)
 - [ Roles](#-roles)
+- [PostMan](#-hopeconnect-on-PostMan )
 - [ Contact](#-contact)
 
   
@@ -227,6 +228,9 @@ Add/edit orphan details (restricted to their facility).
 Post urgent needs (food, medicine).
 Respond to volunteer applications.   
 
+# Hopeconnect on PostMan  
+
+[https://github.com/NoorNofal610/HopeConnect/blob/main/HopeConnect.postman_collection.json](https://github.com/NoorNofal610/HopeConnect/blob/main/HopeConnect.postman_collection.json)
 
 # 📱 Contact
 
