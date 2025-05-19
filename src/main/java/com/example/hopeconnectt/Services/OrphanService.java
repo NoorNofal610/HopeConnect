@@ -148,14 +148,7 @@ public void updatePhotoPath(Long orphanId, String photoPath) {
     orphanRepository.save(orphan);
 }
 
-public Resource loadOrphanPhoto(String filename) throws MalformedURLException {
-    Path file = (Path) Paths.get("uploads/orphan-photos/").resolve(filename);
-    Resource resource = (Resource) new UrlResource(((java.nio.file.Path) file).toUri());
-    if (((AbstractFileResolvingResource) resource).exists() || ((AbstractFileResolvingResource) resource).isReadable()) {
-        return resource;
-    } else {
-        throw new RuntimeException("Could not read file: " + filename);
-    }
-}
+
+
 
 }
