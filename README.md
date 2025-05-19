@@ -226,8 +226,15 @@ Add/edit orphan details (restricted to their facility).
 Post urgent needs (food, medicine).
 Respond to volunteer applications.   
 
-# Run on Postman
+## 🧪 Run on Postman
+
+Click the button below to test the API on Postman:
+
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://blue-resonance-997013.postman.co/workspace/Team-Workspace~56271c95-4622-4362-8f7f-c75b19e079c3/collection/43341860-7927cbaa-2b93-4e5d-9958-78755f8eeb29?action=share&creator=43341860)
+
+Or view the full API documentation here:
+
+🔗 [HopeConnect API Documentation](https://documenter.getpostman.com/view/39311362/2sAY519g8Z)
 # 📱 Contact
 
  - [Compose to Rema via Gmail](https://mail.google.com/mail/?view=cm&fs=1&to=remaabualnaser570@gmail.com)
