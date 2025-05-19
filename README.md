@@ -2,7 +2,7 @@
     <img src="https://github.com/NoorNofal610/HopeConnect/blob/main/hopeConnect.png" alt="HopeConnect" width="500" height="400">
     <h1>Lighting the Path of Hope</h1>
     <a href="#" style="margin-right: 60px;">👾 View Demo</a>
-    <a href="https://github.com/NoorNofal610/HopeConnect/issues/new?labels=bug&template=bug_report.md">🐞 Report Bug</a>
+    <a href="https://github.com/NoorNofal610/HopeConnect/issues/new?labels=bug" target="_blank">🐞 Report Bug</a>
 </div>
 
 # 🌟 About the Project
