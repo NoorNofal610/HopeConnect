@@ -53,7 +53,7 @@ public UserDetailsService userDetailsService(PasswordEncoder encoder) {
           .csrf(AbstractHttpConfigurer::disable)
           .authorizeHttpRequests(auth -> auth
               // Public endpoints
-              .requestMatchers("/api/auth/**").permitAll()
+              .requestMatchers("/api/auth/**").hasRole("ADMIN")
 
             .requestMatchers("/api/external-data/**").hasRole("ADMIN")
 
@@ -72,8 +72,8 @@ public UserDetailsService userDetailsService(PasswordEncoder encoder) {
               
               // Combined access
               .requestMatchers("/api/volunteers/**","/api/volunteer-matches/**").hasAnyRole("ADMIN", "VOLUNTEER")
-              .requestMatchers( "/api/reviews/**").hasRole("ADMIN") 
-              .requestMatchers( "/api/sponsorships/**").hasAnyRole("DONOR", "ADMIN")
+        //.requestMatchers( "/api/reviews/**").hasRole("ADMIN") 
+              .requestMatchers( "/api/sponsorships/**","/api/reviews/**").hasAnyRole("DONOR", "ADMIN")
               .anyRequest().authenticated()
           )
           .httpBasic(basic -> basic.realmName("HopeConnect"));

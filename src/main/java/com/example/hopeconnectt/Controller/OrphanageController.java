@@ -75,17 +75,12 @@ public ResponseEntity<Orphanage> getOrphanageById(@PathVariable Long id) {
         }
     }
 
-    @PutMapping("/update/{id}")
-public ResponseEntity<String> updateOrphanage(
+@PutMapping("/update/{id}")
+public ResponseEntity<Orphanage> updateOrphanage(
         @PathVariable Long id,
         @RequestBody Orphanage orphanageDetails) {
-    try {
-        return ResponseEntity.ok("Orphanage with ID " + id + " updated successfully");
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Error updating orphanage: " + e.getMessage());
-    }
+    Orphanage updated = orphanageService.updateOrphanage(id, orphanageDetails);
+    return ResponseEntity.ok(updated);
 }
-
 
 }

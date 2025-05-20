@@ -58,7 +58,6 @@ public ResponseEntity<String> updateOrphan(
         return ResponseEntity.status(500).body("Error updating orphan: " + e.getMessage());
     }
 }
-
     @DeleteMapping("/delete/{id}")
 public ResponseEntity<String> deleteOrphan(@PathVariable Long id) {
     try {
